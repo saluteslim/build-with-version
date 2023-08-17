@@ -25,7 +25,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: saluteslim/versiontest:1.0.0 # Replace with your Docker Hub username and image name
+          tags: saluteslim/versiontest:latest # Replace with your Docker Hub username and image name
       
       - name: Semantic Release
         run: npx semantic-release

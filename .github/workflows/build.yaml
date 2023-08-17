@@ -28,3 +28,4 @@ jobs:
         docker build -t versiontest:${{ env.VERSION }} .
         docker tag versiontest:${{ env.VERSION }} saluteslim/versiontest:${{ env.VERSION }}
         docker push saluteslim/versiontest:${{ env.VERSION }}
+

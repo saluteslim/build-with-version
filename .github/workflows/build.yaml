@@ -17,15 +17,6 @@ jobs:
       id: get_latest_version
       run: echo "VERSION=$(git describe --abbrev=0 --tags)" >> $GITHUB_ENV
     
-    - name: Extract major and minor versions
-      id: extract_versions
-      run: |
-        MAJOR=$(echo $VERSION | cut -d. -f1)
-        MINOR=$(echo $VERSION | cut -d. -f2)
-        NEXT_MINOR=$((MINOR + 1))
-        NEXT_VERSION="${MAJOR}.${NEXT_MINOR}"
-        echo "NEXT_VERSION=${NEXT_VERSION}" >> $GITHUB_ENV
-    
     - name: Login to Docker Hub
       uses: docker/login-action@v1
       with:
@@ -34,5 +25,5 @@ jobs:
     
     - name: Build and Push Docker Image
       run: |
-        docker build -t saluteslim/versiontest:${{ env.NEXT_VERSION }} .
-        docker push saluteslim/versiontest:${{ env.NEXT_VERSION }}
+        docker build -t saluteslim/versiontest:$VERSION .
+        docker push saluteslim/versiontest:$VERSION

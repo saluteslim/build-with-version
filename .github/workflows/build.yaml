@@ -34,6 +34,5 @@ jobs:
     
     - name: Build and Push Docker Image
       run: |
-        docker build -t versiontest:${{ env.NEXT_VERSION }} .
-        docker tag versiontest:${{ env.NEXT_VERSION }} saluteslim/versiontest:${{ env.NEXT_VERSION }}
+        docker build -t saluteslim/versiontest:${{ env.NEXT_VERSION }} .
         docker push saluteslim/versiontest:${{ env.NEXT_VERSION }}

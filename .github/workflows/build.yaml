@@ -17,19 +17,9 @@ jobs:
     - name: Bump version and create a tag
       id: bump_version
       run: |
-        # Get latest tag
-        LATEST_TAG=$(git describe --tags --abbrev=0)
-        # Extract parts of the version
-        MAJOR=$(echo $LATEST_TAG | cut -d. -f1)
-        MINOR=$(echo $LATEST_TAG | cut -d. -f2)
-        PATCH=$(echo $LATEST_TAG | cut -d. -f3)
-        # Increment patch version by one
-        NEW_PATCH=$((PATCH + 1))
-        # Construct new version
-        VERSION="${MAJOR}.${MINOR}.${NEW_PATCH}"
-        # Tag in git
+        # Bumping version based on the latest tag and commits
+        VERSION=$(git describe --tags --abbrev=0 | awk -F. '{$NF = $NF + 1;} 1' | sed 's/ /./g')
         git tag $VERSION
-        # Echo version for later steps
         echo "VERSION=${VERSION}" >> $GITHUB_ENV
 
     - name: Login to Docker Hub

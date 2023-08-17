@@ -15,7 +15,12 @@ jobs:
     
     - name: Set version
       id: version
-      run: echo "VERSION=$(date +'%Y%m%d%H%M%S')-${GITHUB_REF/refs\/heads\//}" >> $GITHUB_ENV
+      run: echo "VERSION=$(git rev-parse --short=7 HEAD)" >> $GITHUB_ENV
+
+      # the below names it like this => versiontest:20230817110228-main
+      #"VERSION=$(date +'%Y%m%d%H%M%S')-${GITHUB_REF/refs\/heads\//}" >> $GITHUB_ENV
+
+      # the below names it like this => saluteslim/versiontest:a2de7fb
       #"VERSION=$(git rev-parse --short=7 HEAD)" >> $GITHUB_ENV
     
     - name: Login to Docker Hub

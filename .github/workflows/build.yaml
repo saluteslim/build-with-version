@@ -37,11 +37,11 @@ jobs:
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         DOCKER_BUILDKIT: 1
 
-    - name: Push Docker image
-      run: |
-        docker push saluteslim/versiontest:${{ steps.AutoTagger.outputs.new_tag }}
-      env:
-        DOCKER_BUILDKIT: 1
+    # - name: Push Docker image
+    #   run: |
+    #     docker push saluteslim/versiontest:${{ steps.AutoTagger.outputs.new_tag }}
+    #   env:
+    #     DOCKER_BUILDKIT: 1
 
     - name: echo new tag
       run: |

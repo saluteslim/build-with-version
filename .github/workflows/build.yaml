@@ -27,7 +27,6 @@ jobs:
     - name: Build Docker image
       run: |
         docker buildx build --file Dockerfile --tag saluteslim/versiontest:${{ steps.AutoTagger.outputs.new_tag }} .
-        docker buildx build --file Dockerfile --tag saluteslim/versiontest:latest .
       env:
         DOCKER_BUILDKIT: 1
 

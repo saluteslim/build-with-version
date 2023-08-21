@@ -21,7 +21,7 @@ jobs:
       uses: anothrNick/github-tag-action@1.36.0
       env:
         GITHUB_TOKEN: ${{ secrets.ITHUB_TOKEN }}
-        WITH_V: true
+        WITH_V: false
         DRY_RUN: true
 
     - name: Build Docker image
@@ -37,11 +37,11 @@ jobs:
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         DOCKER_BUILDKIT: 1
 
-    # - name: Push Docker image
-    #   run: |
-    #     docker push saluteslim/versiontest:${{ steps.AutoTagger.outputs.new_tag }}
-    #   env:
-    #     DOCKER_BUILDKIT: 1
+    - name: Push Docker image
+      run: |
+        docker push saluteslim/versiontest:${{ steps.AutoTagger.outputs.new_tag }}
+      env:
+        DOCKER_BUILDKIT: 1
 
     - name: echo new tag
       run: |

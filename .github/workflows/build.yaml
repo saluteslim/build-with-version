@@ -41,7 +41,6 @@ jobs:
     - name: Push Docker image
       run: |
         docker push saluteslim/versiontest:${{ steps.AutoTagger.outputs.new_tag }}
-        docker push saluteslim/versiontest:latest
       env:
         DOCKER_BUILDKIT: 1
 

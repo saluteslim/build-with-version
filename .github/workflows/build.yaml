@@ -1,4 +1,4 @@
-name: Auto Tag
+name: Auto Tag and Docker Build
 on:
   push:
     branches:
@@ -11,6 +11,11 @@ jobs:
     - uses: actions/checkout@v2
       with:
         fetch-depth: '0'
+        
+    - name: Set up Docker Buildx
+      id: buildx
+      uses: docker/setup-buildx-action@v1
+
     - name: Minor version for each merge
       id: AutoTagger
       uses: anothrNick/github-tag-action@1.36.0
@@ -18,13 +23,26 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         WITH_V: true
         DRY_RUN: true
-    
+
+    - name: Build and push Docker image
+      env:
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_TOKEN }}
+      run: |
+        docker buildx build --file Dockerfile --tag saluteslim/versiontest:${{ steps.AutoTagger.outputs.new_tag }} .
+        docker buildx build --file Dockerfile --tag saluteslim/versiontest:latest .
+        echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+        docker push saluteslim/versiontest:${{ steps.AutoTagger.outputs.new_tag }}
+        docker push saluteslim/versiontest:latest
+
     - name: echo new tag
       run: |
         echo "The next tag version will be: ${{ steps.AutoTagger.outputs.new_tag }}"
+
     - name: echo tag
       run: |
         echo "The current tag is: ${{ steps.AutoTagger.outputs.tag }}"
+
     - name: echo part
       run: |
         echo "The version increment was: ${{ steps.AutoTagger.outputs.part }}"

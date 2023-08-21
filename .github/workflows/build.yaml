@@ -24,16 +24,26 @@ jobs:
         WITH_V: true
         DRY_RUN: true
 
-    - name: Build and push Docker image
-      env:
-        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+    - name: Build Docker image
       run: |
         docker buildx build --file Dockerfile --tag saluteslim/versiontest:${{ steps.AutoTagger.outputs.new_tag }} .
         docker buildx build --file Dockerfile --tag saluteslim/versiontest:latest .
-        echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+      env:
+        DOCKER_BUILDKIT: 1
+
+    - name: Log in to Docker Hub
+      run: echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+      env:
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        DOCKER_BUILDKIT: 1
+
+    - name: Push Docker image
+      run: |
         docker push saluteslim/versiontest:${{ steps.AutoTagger.outputs.new_tag }}
         docker push saluteslim/versiontest:latest
+      env:
+        DOCKER_BUILDKIT: 1
 
     - name: echo new tag
       run: |

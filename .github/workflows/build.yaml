@@ -27,11 +27,11 @@ jobs:
     - name: Build and push Docker image
       env:
         DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-        DOCKER_PASSWORD: ${{ secrets.DOCKER_TOKEN }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
       run: |
         docker buildx build --file Dockerfile --tag saluteslim/versiontest:${{ steps.AutoTagger.outputs.new_tag }} .
         docker buildx build --file Dockerfile --tag saluteslim/versiontest:latest .
-        echo $DOCKER_TOKEN | docker login -u $DOCKER_USERNAME --password-stdin
+        echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
         docker push saluteslim/versiontest:${{ steps.AutoTagger.outputs.new_tag }}
         docker push saluteslim/versiontest:latest
 

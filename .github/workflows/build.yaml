@@ -20,7 +20,7 @@ jobs:
       id: AutoTagger
       uses: anothrNick/github-tag-action@1.36.0
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.ITHUB_TOKEN }}
         WITH_V: true
         DRY_RUN: true
 
@@ -31,7 +31,7 @@ jobs:
       run: |
         docker buildx build --file Dockerfile --tag saluteslim/versiontest:${{ steps.AutoTagger.outputs.new_tag }} .
         docker buildx build --file Dockerfile --tag saluteslim/versiontest:latest .
-        echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+        echo $DOCKER_TOKEN | docker login -u $DOCKER_USERNAME --password-stdin
         docker push saluteslim/versiontest:${{ steps.AutoTagger.outputs.new_tag }}
         docker push saluteslim/versiontest:latest
 

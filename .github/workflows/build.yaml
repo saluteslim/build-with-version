@@ -48,3 +48,4 @@ jobs:
       - name: echo part
         run: |
           echo "The version increment was: ${{ steps.AutoTagger.outputs.part }}"
+
